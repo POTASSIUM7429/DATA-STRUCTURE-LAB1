@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1543635078 source:d:\data structure lab\lab1\lab 1.1.0\file.c
+	<stdio.h>
+	<stdlib.h>
+
+1543665118 source:d:\data structure lab\lab1\lab 1.1.0\fileoperation_self.c
+
