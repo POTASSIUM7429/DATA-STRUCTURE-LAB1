@@ -182,8 +182,9 @@ status ListDelete(SqList * L,int i,int* e)
     {
     int *p,*q;
 	if(i<1||i>L->length) return ERROR; //i值不合法
-	p=&(L->elem[i-1]); //p为被删除元素的位置
-	e=p; //e返回被删除的元素的值
+	p=L->elem+(i-1); //p为被删除元素的位置
+	*e=*p; //e返回被删除的元素的值
+	printf("%d\n",*e);
 	q=L->elem+L->length-1; //表尾元素的位置
 	for(++p;p<=q;++p)
 	*(p-1)=*p; //被删除元素之后的元素左移
@@ -215,11 +216,38 @@ L->elem=NULL;
 L->length=0;
 L->listsize=255;
 e=(int*)malloc(sizeof(int));
+FILE* fp;
+char ch;
 
 if(!IntiaList(L))
 	printf("list load failed\n");
 else
-{
+{//file load part
+if ((fp=fopen("test.txt","r"))==NULL)
+	{
+	 printf("File open error\n ");
+	 getchar();
+	 return 1;
+	}
+printf("file has been detected\n");
+ch=fgetc(fp);
+  if(ch==EOF)
+   printf("empty file\n");
+  else
+   printf("not empty\n");
+
+if(ch!=EOF)
+{printf("file is not empty.ues file data or setup a new one?\n0.setup a new one\t1.use directly\n");
+scanf("%d",&temp);
+if(!temp)
+{goto setup;}
+else
+{fp=fopen("test.txt","r");while(fread(&L->elem[L->length],sizeof(int),1,fp))
+   L->length++;
+   goto load;
+}
+}
+	setup:
 	printf("data load success\n");
 	getchar();
 
@@ -228,6 +256,7 @@ else
 	for(;temp!=255;*(L->elem+L->length)=temp,L->length++)
 	scanf("%d",&temp);
 	L->length--;
+	load:
 	printf("%d\n",L->length);
 	printf("%d\n",L->listsize);
 	ListTraverse(*L);
@@ -246,7 +275,7 @@ else
         printf("          6. GetElem       12. ListTrabverse\n");
         printf("          0. Exit\n");
         printf("-------------------------------------------------\n");
-        printf("    请选择你的操作[0~12]:");
+        printf("    celect the operaction number[0~12]:");
         scanf("%d",&cho);
 	switch(cho)
 	{
@@ -333,10 +362,10 @@ else
 	case 11:
 	printf("put in order wanna delete\n");
 	scanf("%d",&dgl);
-	if(ListInsert(L,dgl,e))
+	if(ListDelete(L,dgl,e))
 	{printf("delete success:now:\n");
 	ListTraverse(*L);
-	printf("and data deleted is %d",e);}
+	printf("and data deleted is %d",*e);}
 	else
 	printf("List not exist or order is out of range\n");
 	getchar();getchar();break;
@@ -347,7 +376,16 @@ else
 	getchar();getchar();break;
 
 	case 0:
-	printf("sys closed!\n");break;
+	ListTraverse(*L);
+	if ((fp=fopen("test.txt","wt"))==NULL)
+	{
+	 printf("File open error\n ");
+	return 1;
+	}
+	fwrite(L->elem,sizeof(int),L->length,fp);
+	fclose(fp);
+	DestroyList(L);
+	printf("space released and sys closed\n");break;
 	}
 	}
 	while(cho!=0);
