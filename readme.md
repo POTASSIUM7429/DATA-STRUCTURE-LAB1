@@ -87,7 +87,7 @@
 最近...唉不提了
 12/11
 ---
-## V1.2.2
+## V1.2.1
 - 插入和删除函数排障完毕
 - 文件模块
 ---
@@ -95,4 +95,9 @@
 - 多表操作
 - 文件系统的配合
 - 联调联试<br>
-12/22
+12/12
+---
+## final
+- finish testing & checking in 12/12
+- V1.2.1 is the final version.
+- All the functions have been confirmed.
